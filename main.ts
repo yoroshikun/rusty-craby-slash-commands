@@ -7,7 +7,9 @@ import {
 // from Discord.
 import nacl from "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts";
 
-import { handle } from "./helpers/xe.ts";
+import mapOptions from "./utils/mapOptions.ts";
+import { handle as handleXE, XEOptions } from "./helpers/xe.ts";
+import { handle as handleJisho, JishoOptions } from "./helpers/jisho.ts";
 
 // The main logic of the Discord Slash Command is defined in this function.
 const home = async (request: Request) => {
@@ -53,14 +55,33 @@ const home = async (request: Request) => {
       switch (command) {
         case "xe": {
           // Do the xe command
-          const options = data.options;
-          const result = await handle(options);
+          const options = mapOptions(data.options) as XEOptions;
+          const result = await handleXE(options);
           // Convert the response to a embed object
           const embed = {
             type: "rich",
             title: "Exchange Rate",
             description: result,
             color: 0xfdc835,
+          };
+
+          return json({
+            type: 4,
+            data: {
+              embeds: [embed],
+            },
+          });
+        }
+        case "jisho": {
+          // Do the jisho command
+          const options = mapOptions(data.options) as JishoOptions;
+          const result = await handleJisho(options);
+
+          // Convert the response to a embed object
+          const embed = {
+            type: "rich",
+            description: result,
+            color: 0x00fa9a,
           };
 
           return json({

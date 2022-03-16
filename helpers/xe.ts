@@ -1,5 +1,12 @@
 const API_KEY = Deno.env.get("CURR_CONV_TOKEN");
 
+export interface XEOptions {
+  [key: string]: string | undefined;
+  amount: string;
+  from?: string;
+  to?: string;
+}
+
 const getExchangeRate = async (from: string, to: string) => {
   const conversionKey = `${from}_${to}`;
   const url = `https://free.currconv.com/api/v7/convert?q=${conversionKey}&compact=ultra&apiKey=${API_KEY}`;
@@ -8,18 +15,12 @@ const getExchangeRate = async (from: string, to: string) => {
   return data[conversionKey];
 };
 
-const handle = async (options: [{ name: string; value: string }]) => {
+const handle = async (options: XEOptions) => {
   let amount = 1;
   let from = "AUD";
   let to = "JPY";
 
-  // Map the options to a key value pair
-  const mappedOptions = options.reduce((acc, option) => {
-    acc[option.name] = option.value;
-    return acc;
-  }, {} as { [key: string]: string; amount: string; to: string; from: string });
-
-  if (!mappedOptions.amount) {
+  if (!options.amount) {
     // Falsy value (0, false, null, undefined)
     return {
       type: 4,
@@ -30,18 +31,18 @@ const handle = async (options: [{ name: string; value: string }]) => {
   } // This should never be called due to how slash commands work
 
   // Ugly simple overwrite
-  if (mappedOptions.amount !== undefined) {
+  if (options.amount !== undefined) {
     if (!isNaN(amount)) {
-      amount = Number(mappedOptions.amount);
+      amount = Number(options.amount);
     }
   }
 
-  if (mappedOptions.to !== undefined) {
-    to = mappedOptions.to;
+  if (options.to !== undefined) {
+    to = options.to;
   }
 
-  if (mappedOptions.from !== undefined) {
-    from = mappedOptions.from;
+  if (options.from !== undefined) {
+    from = options.from;
   }
 
   // Get the exchange rate

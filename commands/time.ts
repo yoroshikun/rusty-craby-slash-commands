@@ -1,4 +1,4 @@
-import { datetime } from "https://deno.land/x/ptera/mod.ts";
+import { datetime } from "https://deno.land/x/ptera@v1.0.2/mod.ts";
 
 export interface TimeOptions {
   [key: string]: string | undefined;

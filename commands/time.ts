@@ -37,7 +37,7 @@ const handle = (options: TimeOptions) => {
     )}:00.000${options.offset}`
   );
 
-  return `The time in your timezone should be: <t:${dt.getTime()}>`;
+  return `The time in your timezone should be: <t:${dt.getTime() / 1000}>`;
 };
 
 export { handle };

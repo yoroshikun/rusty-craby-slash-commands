@@ -97,7 +97,7 @@ const handle = async (options: JishoOptions) => {
       jisho.data[0].japanese[0].reading || "No Reading"
     }\n----------\n[📗](https://jisho.org/word/${
       jisho.data[0].slug
-    }) | [🔍}](https://jisho.org/searc/${word})`;
+    }) | [🔍](https://jisho.org/searc/${word})`;
   } else {
     throw new Error("No data found for word");
   }

@@ -8,8 +8,9 @@ import {
 import nacl from "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts";
 
 import mapOptions from "./utils/mapOptions.ts";
-import { handle as handleXE, XEOptions } from "./helpers/xe.ts";
-import { handle as handleJisho, JishoOptions } from "./helpers/jisho.ts";
+import { handle as handleXE, XEOptions } from "./commands/xe.ts";
+import { handle as handleJisho, JishoOptions } from "./commands/jisho.ts";
+import { handle as handleTime, TimeOptions } from "./commands/time.ts";
 
 // The main logic of the Discord Slash Command is defined in this function.
 const home = async (request: Request) => {
@@ -91,13 +92,31 @@ const home = async (request: Request) => {
             },
           });
         }
+        case "time": {
+          // Do the time command
+          const options = mapOptions(data.options) as TimeOptions;
+          const result = await handleTime(options);
+
+          // Convert the response to a embed object
+          const embed = {
+            type: "rich",
+            title: "Time to local",
+            description: result,
+            color: 0x04eded,
+          };
+
+          return json({
+            type: 4,
+            data: {
+              embeds: [embed],
+            },
+          });
+        }
         case "hello": {
           const { value } = data.options.find(
             (option: { name: string }) => option.name === "name"
           );
           return json({
-            // Type 4 responds with the below message retaining the user's
-            // input at the top.
             type: 4,
             data: {
               content: `Hello, ${value}!`,

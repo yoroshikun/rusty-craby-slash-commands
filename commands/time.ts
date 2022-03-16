@@ -12,7 +12,7 @@ export interface TimeOptions {
 }
 
 const handle = (options: TimeOptions) => {
-  const today = datetime();
+  const today = datetime(); // Accurate enough for defaults
 
   if (options.offsetNegative && options.offsetPositive) {
     throw new Error("You can't use both positive and negative offsets.");
@@ -27,11 +27,17 @@ const handle = (options: TimeOptions) => {
   options.offset =
     options.offset_positive || options.offset_negative || "+00:00";
 
-  const dt = datetime(
-    `${options.year}-${options.month}-${options.day}T${options.hour}:${options.minute}:00.000${options.offset}`
+  const dt = new Date(
+    `${options.year}-${options.month.padStart(2, "0")}-${options.day.padStart(
+      2,
+      "0"
+    )}T${options.hour.padStart(2, "0")}:${options.minute.padStart(
+      2,
+      "0"
+    )}:00.000${options.offset}`
   );
 
-  return `The time in your timezone should be: <t:${dt.format("X")}>`;
+  return `The time in your timezone should be: <t:${dt.getTime()}>`;
 };
 
 export { handle };

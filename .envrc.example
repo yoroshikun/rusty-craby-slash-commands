@@ -1,0 +1,4 @@
+export BOT_TOKEN=''
+export CURR_CONV_TOKEN=''
+export CLIENT_ID=''
+export DISCORD_PUBLIC_KEY=''

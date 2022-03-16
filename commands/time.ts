@@ -29,7 +29,7 @@ const handle = (options: TimeOptions) => {
 
   const dt = datetime(
     `${options.year}-${options.month}-${options.day}T${options.hour}:${options.minute}:00.000${options.offset}`
-  ).toUTC();
+  );
 
   return `The time in your timezone should be: <t:${dt.format("X")}>`;
 };

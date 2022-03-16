@@ -23,7 +23,7 @@ const handle = (options: TimeOptions) => {
   options.month = options.month || today.format("MM");
   options.day = options.day || today.format("dd");
   options.hour = options.hour || today.format("HH");
-  options.minute = options.minute || today.format("mm");
+  options.minute = options.minute || "00";
   options.offset =
     options.offset_positive || options.offset_negative || "+00:00";
 

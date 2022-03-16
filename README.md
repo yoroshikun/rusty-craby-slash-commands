@@ -11,6 +11,16 @@ Discord slash commands written in deno for the rustycraby discord bot. Hosted se
 - `time`: Convert time to your local timezone
 - `time <timezone>`: Convert time to a timezone
 
+### Edit Commands
+
+You can edit commands by running the make scripts in the scripts directory with deno.
+
+```bash
+deno run --allow-net --allow-env scripts/makeJishoCommand.ts
+deno run --allow-net --allow-env scripts/makeTimeCommand.ts
+deno run --allow-net --allow-env scripts/makeXeCommand.ts
+```
+
 ### Useful curl
 
 Base xe command

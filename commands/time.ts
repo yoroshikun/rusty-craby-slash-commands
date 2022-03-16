@@ -7,11 +7,16 @@ export interface TimeOptions {
   day?: string;
   hour?: string;
   minute?: string;
-  offset?: string;
+  offset_positive?: string;
+  offset_negative?: string;
 }
 
 const handle = (options: TimeOptions) => {
   const today = datetime();
+
+  if (options.offsetNegative && options.offsetPositive) {
+    throw new Error("You can't use both positive and negative offsets.");
+  }
 
   // Merge options with defaults
   options.year = options.year || today.format("YYYY");
@@ -20,9 +25,7 @@ const handle = (options: TimeOptions) => {
   options.hour = options.hour || today.format("HH");
   options.minute = options.minute || today.format("mm");
   options.offset =
-    options.offset || today.offsetHour() > 0
-      ? `+${today.offsetHour()}`
-      : `-${today.offsetHour()}`;
+    options.offset_positive || options.offset_negative || "+00:00";
 
   const dt = datetime(
     `${options.year}-${options.month}-${options.day}T${options.hour}:${options.minute}:00.000${options.offset}`

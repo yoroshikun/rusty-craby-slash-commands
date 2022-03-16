@@ -8,6 +8,8 @@ Discord slash commands written in deno for the rustycraby discord bot. Hosted se
 - `xe <amount> <~from> <~to>`, For example `xe 1 AUD JPY` is equivalent to `xe 1` with defaults
 - `jisho`: Search jisho.org
 - `jisho <word>`: Search jisho.org for a word
+- `time`: Convert time to your local timezone
+- `time <timezone>`: Convert time to a timezone
 
 ### Useful curl
 
@@ -28,5 +30,16 @@ curl -X POST \
 -H 'Content-Type: application/json' \
 -H "Authorization: Bot $BOT_TOKEN" \
 -d '{"name":"jisho","description":"Search Jisho for a word","options":[{"name":"word","description":"The word that will be searched","type":3,"required":true}]}' \
+"https://discord.com/api/v8/applications/$CLIENT_ID/commands"
+```
+
+Base Time command
+
+```bash
+curl -X POST \
+-H 'Content-Type: application/json' \
+-H "Authorization: Bot $BOT_TOKEN" \
+-d '{"name":"time","description":"Return a local timestamp of the time given","options":[{"name":"year","description":"The year of the starting timestamp","type":3,"required":false},
+{"name":"month","description":"The month of the starting timestamp","type":3,"required":false},{"name":"day","description":"The day of the starting timestamp","type":3,"required":false},{"name":"hour","description":"The hour of the starting timestamp","type":3,"required":false},{"name":"minute","description":"The minute of the starting timestamp","type":3,"required":false},{"name":"offset_positive","description":"The Positive UTC offset of the starting timestamp","type":3,"required":false,"choices":[{"name":"+00:00","value":"+00:00"},{"name":"+00:30","value":"+00:30"},{"name":"+01:00","value":"+01:00"},{"name":"+01:30","value":"+01:30"},{"name":"+02:00","value":"+02:00"},{"name":"+02:30","value":"+02:30"},{"name":"+03:00","value":"+03:00"},{"name":"+03:30","value":"+03:30"},{"name":"+04:00","value":"+04:00"},{"name":"+04:30","value":"+04:30"},{"name":"+05:00","value":"+05:00"},{"name":"+05:30","value":"+05:30"},{"name":"+06:00","value":"+06:00"},{"name":"+06:30","value":"+06:30"},{"name":"+07:00","value":"+07:00"},{"name":"+07:30","value":"+07:30"},{"name":"+08:00","value":"+08:00"},{"name":"+08:30","value":"+08:30"},{"name":"+09:00","value":"+09:00"},{"name":"+09:30","value":"+09:30"},{"name":"+10:00","value":"+10:00"},{"name":"+10:30","value":"+10:30"},{"name":"+11:00","value":"+11:00"},{"name":"+11:30","value":"+11:30"},{"name":"+12:00","value":"+12:00"}]},{"name":"offset_negative","description":"The Negative UTC offset of the starting timestamp","type":3,"required":false,"choices":[{"name":"-00:00","value":"-00:00"},{"name":"-00:30","value":"-00:30"},{"name":"-01:00","value":"-01:00"},{"name":"-01:30","value":"-01:30"},{"name":"-02:00","value":"-02:00"},{"name":"-02:30","value":"-02:30"},{"name":"-03:00","value":"-03:00"},{"name":"-03:30","value":"-03:30"},{"name":"-04:00","value":"-04:00"},{"name":"-04:30","value":"-04:30"},{"name":"-05:00","value":"-05:00"},{"name":"-05:30","value":"-05:30"},{"name":"-06:00","value":"-06:00"},{"name":"-06:30","value":"-06:30"},{"name":"-07:00","value":"-07:00"},{"name":"-07:30","value":"-07:30"},{"name":"-08:00","value":"-08:00"},{"name":"-08:30","value":"-08:30"},{"name":"-09:00","value":"-09:00"},{"name":"-09:30","value":"-09:30"},{"name":"-10:00","value":"-10:00"},{"name":"-10:30","value":"-10:30"},{"name":"-11:00","value":"-11:00"},{"name":"-11:30","value":"-11:30"},{"name":"-12:00","value":"-12:00"}]}]}' \
 "https://discord.com/api/v8/applications/$CLIENT_ID/commands"
 ```

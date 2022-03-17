@@ -89,15 +89,22 @@ const handle = async (options: JishoOptions) => {
 
   if (jisho.data.length > 0) {
     // Construct the embed description
-    return `**English**: ${
-      jisho.data[0].senses[0].english_definitions[0]
-    }\n**Japanese**: ${
-      jisho.data[0].japanese[0].word || "No Kana"
-    }\n**Reading**: ${
-      jisho.data[0].japanese[0].reading || "No Reading"
-    }\n----------\n[📗](https://jisho.org/word/${
-      jisho.data[0].slug
-    }) | [🔍](https://jisho.org/searc/${word})`;
+    // For clarity the part are split into paragraphs and assembled later
+    const data = jisho.data[0];
+    const description = [];
+
+    description.push(`**You searched for:** ${word}`);
+    description.push(`**English:** ${data.senses[0].english_definitions[0]}`);
+    description.push(`**Japanese:** ${data.japanese[0].word || "No Kana"}`);
+    description.push(
+      `**Reading:** ${data.japanese[0].reading || "No Reading"}`
+    );
+    description.push(`----------`);
+    description.push(
+      `[📗](https://jisho.org/word/${data.slug}) | [🔍](https://jisho.org/searc/${word})`
+    );
+
+    return description.join(`\n`);
   } else {
     throw new Error("No data found for word");
   }

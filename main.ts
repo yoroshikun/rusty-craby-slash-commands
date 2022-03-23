@@ -68,12 +68,17 @@ const home = async (request: Request) => {
           const options = mapOptions(data.options);
 
           if (data.options?.set_defaults) {
+            console.log("Setting defaults");
+            console.log("options", options);
+            console.log("member", member);
             // Set the default options
             const result = await handleXEDefault(
               options as XEDefaultOptions,
               member.user.id,
               redis
             );
+
+            console.log(result);
 
             const embed = {
               type: "rich",

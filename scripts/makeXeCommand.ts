@@ -48,7 +48,7 @@ const makeXeCommand = async () => {
               name: "amount",
               description: "The amount of the currency (Number)",
               type: 3,
-              required: true,
+              required: false,
             },
             {
               name: "from",
@@ -63,6 +63,12 @@ const makeXeCommand = async () => {
               type: 3,
               required: false,
               choices: currencies,
+            },
+            {
+              name: "set_defaults",
+              description: "Set the default currencies for this user",
+              type: 5,
+              required: false,
             },
           ],
         }),

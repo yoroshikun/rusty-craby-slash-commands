@@ -8,9 +8,18 @@ import {
 import nacl from "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts";
 
 import mapOptions from "./utils/mapOptions.ts";
-import { handle as handleXE, XEOptions } from "./commands/xe.ts";
+import connectRedis from "./utils/connectRedis.ts";
+import {
+  handle as handleXE,
+  handleDefault as handleXEDefault,
+  XEOptions,
+  XEDefaultOptions,
+} from "./commands/xe.ts";
 import { handle as handleJisho, JishoOptions } from "./commands/jisho.ts";
 import { handle as handleTime, TimeOptions } from "./commands/time.ts";
+
+// Globals
+const redis = await connectRedis();
 
 // The main logic of the Discord Slash Command is defined in this function.
 const home = async (request: Request) => {
@@ -56,8 +65,36 @@ const home = async (request: Request) => {
       switch (command) {
         case "xe": {
           // Do the xe command
-          const options = mapOptions(data.options) as XEOptions;
-          const result = await handleXE(options);
+          const options = mapOptions(data.options);
+
+          if (data.options.setDefault) {
+            // Set the default options
+            const result = await handleXEDefault(
+              options as XEDefaultOptions,
+              data.user_id,
+              redis
+            );
+
+            const embed = {
+              type: "rich",
+              title: "Exchange Rate",
+              description: result,
+              color: 0xfdc835,
+            };
+
+            return json({
+              type: 4,
+              data: {
+                embeds: [embed],
+              },
+            });
+          }
+
+          const result = await handleXE(
+            options as XEOptions,
+            data.member.user.id,
+            redis
+          );
           // Convert the response to a embed object
           const embed = {
             type: "rich",

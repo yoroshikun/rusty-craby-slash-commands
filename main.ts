@@ -71,7 +71,7 @@ const home = async (request: Request) => {
             // Set the default options
             const result = await handleXEDefault(
               options as XEDefaultOptions,
-              data.user_id,
+              data.member.user.id,
               redis
             );
 

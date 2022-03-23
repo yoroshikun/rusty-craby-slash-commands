@@ -95,7 +95,7 @@ const handle = async (options: XEOptions, userId: string, redis: Redis) => {
   let amount = 1;
   let { from, to } = await getUserDefaultCurrencyCodes(userId, redis);
 
-  if (!options.amount) {
+  if (!options?.amount) {
     // Falsy value (0, false, null, undefined)
     return {
       type: 4,
@@ -106,17 +106,17 @@ const handle = async (options: XEOptions, userId: string, redis: Redis) => {
   } // This should never be called due to how slash commands work
 
   // Ugly simple overwrite
-  if (options.amount !== undefined) {
+  if (options?.amount !== undefined) {
     if (!isNaN(amount)) {
       amount = Number(options.amount);
     }
   }
 
-  if (options.to !== undefined) {
+  if (options?.to !== undefined) {
     to = options.to;
   }
 
-  if (options.from !== undefined) {
+  if (options?.from !== undefined) {
     from = options.from;
   }
 

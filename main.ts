@@ -47,7 +47,7 @@ const home = async (request: Request) => {
     );
   }
 
-  const { type = 0, data = { options: [] } } = JSON.parse(body);
+  const { type = 0, data = { options: [] }, member } = JSON.parse(body); // Type this later
   // Discord performs Ping interactions to test our application.
   // Type 1 in a request implies a Ping interaction.
   if (type === 1) {
@@ -71,7 +71,7 @@ const home = async (request: Request) => {
             // Set the default options
             const result = await handleXEDefault(
               options as XEDefaultOptions,
-              data.member.user.id,
+              member.user.id,
               redis
             );
 
@@ -92,7 +92,7 @@ const home = async (request: Request) => {
 
           const result = await handleXE(
             options as XEOptions,
-            data.member.user.id,
+            member.user.id,
             redis
           );
           // Convert the response to a embed object

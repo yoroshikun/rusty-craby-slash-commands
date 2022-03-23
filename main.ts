@@ -70,7 +70,7 @@ const home = async (request: Request) => {
           console.log("options", options);
           console.log("member", member);
 
-          if (data.options?.set_defaults) {
+          if (options?.set_defaults) {
             // Set the default options
             const result = await handleXEDefault(
               options as XEDefaultOptions,

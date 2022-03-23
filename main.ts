@@ -67,7 +67,7 @@ const home = async (request: Request) => {
           // Do the xe command
           const options = mapOptions(data.options);
 
-          if (data.options.setDefault) {
+          if (data.options.set_default) {
             // Set the default options
             const result = await handleXEDefault(
               options as XEDefaultOptions,

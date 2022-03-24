@@ -71,12 +71,7 @@ const handle = async (options: JishoOptions) => {
 
   if (!options.word) {
     // Falsy value (0, false, null, undefined)
-    return {
-      type: 4,
-      data: {
-        content: "You must specify a word to search.",
-      },
-    };
+    return "You must specify a word to search.";
   } // This should never be called due to how slash commands work
 
   // Ugly simple overwrite

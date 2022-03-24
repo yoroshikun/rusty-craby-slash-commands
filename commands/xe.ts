@@ -2,40 +2,10 @@ import { Redis } from "https://deno.land/x/redis@v0.25.4/mod.ts";
 
 const API_KEY = Deno.env.get("CURR_CONV_TOKEN");
 
-enum CURRENCY_CODE { // Todo: use this enum
-  "USD",
-  "EUR",
-  "JPY",
-  "BGN",
-  "BTC",
-  "CZK",
-  "DKK",
-  "GBP",
-  "SEK",
-  "CHF",
-  "AUD",
-  "BRL",
-  "CAD",
-  "CNY",
-  "HKD",
-  "INR",
-  "KRW",
-  "MXN",
-  "MYR",
-  "NZD",
-  "PHP",
-  "SGD",
-}
-
 export interface XEOptions {
-  [key: string]: string | undefined;
-  amount: string;
-  from?: string;
-  to?: string;
-}
-
-export interface XEDefaultOptions {
-  [key: string]: string | undefined;
+  [key: string]: string | boolean | undefined;
+  set_defaults?: boolean;
+  amount?: string;
   from?: string;
   to?: string;
 }
@@ -75,11 +45,11 @@ const getExchangeRate = async (from: string, to: string) => {
   return data[conversionKey];
 };
 
-const handleDefault = async (
-  options: XEDefaultOptions,
+const setDefaults = async (
+  options: XEOptions,
   userId: string,
   redis: Redis
-) => {
+): Promise<string> => {
   const { from, to } = options;
   await setUserDefaultCurrencyCodes(userId, { from, to }, redis);
 
@@ -91,7 +61,11 @@ const handleDefault = async (
   return response || "No options specified.";
 };
 
-const handle = async (options: XEOptions, userId: string, redis: Redis) => {
+const getXE = async (
+  options: XEOptions,
+  userId: string,
+  redis: Redis
+): Promise<string> => {
   let amount = 1;
   let { from, to } = await getUserDefaultCurrencyCodes(userId, redis);
 
@@ -110,13 +84,19 @@ const handle = async (options: XEOptions, userId: string, redis: Redis) => {
     from = options.from;
   }
 
-  // Get the exchange rate
   const exchangeRate = await getExchangeRate(from, to);
 
-  // Calculate the converted amount
   const convertedAmount = (amount * exchangeRate).toFixed(4);
 
   return `${amount} ${from} --> ${convertedAmount} ${to}`;
 };
 
-export { handle, handleDefault };
+const handle = async (options: XEOptions, userId: string, redis: Redis) => {
+  if (options?.set_defaults) {
+    return await setDefaults(options, userId, redis);
+  }
+
+  return await getXE(options, userId, redis);
+};
+
+export { handle };

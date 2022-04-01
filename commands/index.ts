@@ -3,6 +3,8 @@ import { Redis } from "https://deno.land/x/redis@v0.25.4/mod.ts";
 import { handle as handleXE, XEOptions } from "./xe.ts";
 import { handle as handleJisho, JishoOptions } from "./jisho.ts";
 import { handle as handleTime, TimeOptions } from "./time.ts";
+import { handle as handleWK, WKOptions } from "./wk.ts";
+import { handle as handleWKToken, WKTokenOptions } from "./wktoken.ts";
 import mapOptions from "../utils/mapOptions.ts";
 import { DiscordInteractionData, DiscordEmbed } from "../utils/types.ts";
 
@@ -45,6 +47,28 @@ const handleCommand = async (
         title: "Time to local",
         description: result,
         color: 0x04eded,
+      };
+    }
+    case "wk": {
+      const ops = options as WKOptions;
+      const result = await handleWK(ops, member.user.id, redis);
+
+      return {
+        type: "rich",
+        title: "WaniKani",
+        description: result,
+        color: 0x00fa9a,
+      };
+    }
+    case "wktoken": {
+      const ops = options as WKTokenOptions;
+      const result = await handleWKToken(ops, member.user.id, redis);
+
+      return {
+        type: "rich",
+        title: "WaniKani Token",
+        description: result,
+        color: 0x00fa9a,
       };
     }
     case "hello": {

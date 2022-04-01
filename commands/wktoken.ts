@@ -56,22 +56,19 @@ const handle = async (
   userId: string,
   redis: Redis
 ) => {
-  switch (options.option) {
+  switch (options?.option || "show") {
     case "show":
       return getWKToken(userId, redis);
     case "set": {
-      const isValid = await verifyToken(options.token);
-      if (isValid && options.token) {
-        await saveWKToken(options.token, userId, redis);
+      const isValid = await verifyToken(options?.token);
+      if (isValid && options?.token) {
+        await saveWKToken(options?.token, userId, redis);
       }
       return "Token Set!";
     }
     case "delete":
       await deleteWKToken(userId, redis);
       return "Token Deleted!";
-
-    default:
-      return getWKToken(userId, redis);
   }
 };
 

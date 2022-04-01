@@ -56,7 +56,7 @@ const handle = async (
   userId: string,
   redis: Redis
 ) => {
-  switch (options?.option || "show") {
+  switch (options?.option || (options?.token ? "set" : "show")) {
     case "show":
       return getWKToken(userId, redis);
     case "set": {

@@ -44,7 +44,11 @@ const deleteWKToken = async (userId: string, redis: Redis) => {
 
 const getWKToken = async (userId: string, redis: Redis) => {
   const wkTokenKey = `${userId}:wk_token`;
-  return await redis.get(wkTokenKey);
+  const token = await redis.get(wkTokenKey);
+  if (!token) {
+    return "No token found, you should add one!";
+  }
+  return token;
 };
 
 const handle = async (

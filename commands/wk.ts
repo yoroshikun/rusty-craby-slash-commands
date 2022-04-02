@@ -145,7 +145,36 @@ const getUserData = async (userId: string, redis: Redis) => {
   return newData;
 };
 
-const handle = async (options: WKOptions, userId: string, redis: Redis) => {
+const makeSummary = (cacheData: CacheData): string => {
+  const level = cacheData.user.data.level;
+  const lessons = cacheData.summary.data.lessons.subject_ids.length;
+  const reviews = cacheData.summary.data.reviews.subject_ids.length;
+  const nextLesson = `<t:${
+    new Date(cacheData.summary.data.lessons.available_at).getTime() / 1000
+  }>`;
+  const nextReview = `<t:${
+    new Date(cacheData.summary.data.reviews.available_at).getTime() / 1000
+  }>`;
+
+  return `Level: ${level}\nLessons: ${lessons}\nReviews: ${reviews}\nNext lesson: ${nextLesson}\nNext review: ${nextReview}`;
+};
+
+const makeUser = (cacheData: CacheData): string => {
+  const level = cacheData.user.data.level;
+  const username = cacheData.user.data.username;
+  const startedAt = `<t:${new Date(cacheData.user.data.started_at).getTime() / 1000}>`;
+  const subscription = cacheData.user.data.subscription.type;
+  const maxLevel = cacheData.user.data.subscription.max_level_granted;
+
+  return `Username: ${username}\nStarted at: ${startedAt}\nLevel: ${level}\n\nSubscription Type: ${subscription}\nMax level Possible: ${maxLevel}`;
+};
+
+const handle = async (
+  options: WKOptions,
+  userId: string,
+  serverId: string,
+  redis: Redis
+) => {
   const { type } = options;
   const data = await getUserData(userId, redis);
 
@@ -155,12 +184,19 @@ const handle = async (options: WKOptions, userId: string, redis: Redis) => {
       return `You are currently level ${data.user.data.level}`;
     }
     case "summary": {
-      return data.summary.data.reviews.subject_ids.join(", ");
+      if (!data.user.data.current_vacation_started_at !== null) {
+        return "You are currently on a vacation, we cant make a summary for you";
+      }
+
+      return makeSummary(data);
     }
     case "user": {
-      return data.user.data.username;
+      return makeUser(data);
     }
     case "dev": {
+      if (serverId !== "629477069964836864") {
+        return "You are not in the development server to access this data";
+      }
       return JSON.stringify(data);
     }
   }

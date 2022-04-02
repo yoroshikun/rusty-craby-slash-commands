@@ -52,7 +52,7 @@ const handleCommand = async (
     }
     case "wk": {
       const ops = options as WKOptions;
-      const result = await handleWK(ops, member.user.id, redis);
+      const result = await handleWK(ops, member.user.id, guildId, redis);
 
       return {
         type: "rich",

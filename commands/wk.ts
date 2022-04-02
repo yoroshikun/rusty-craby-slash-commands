@@ -109,7 +109,7 @@ const updateUserData = async (
   }
 
   const userData = await fetchApi("user", wkToken as string);
-  const levelData = await fetchApi("level_progression", wkToken as string);
+  const levelData = await fetchApi("level_progressions", wkToken as string);
   const summaryData = await fetchApi("summary", wkToken as string);
 
   const cacheData: CacheData = {

@@ -10,13 +10,16 @@ Discord slash commands written in deno for the rustycraby discord bot. Hosted se
 - `jisho <word>`: Search jisho.org for a word
 - `time`: Convert time to your local timezone
 - `time <~year> <~month> <~day> <~hour> <~minute> <~offset_negative> <~offset_positive>`: Convert time to a timezone
+- `wk <type>`: Interact with User WaniKani data
+- `wktoken <~token> <~option>`: Manage your WaniKani token
 
 ### Edit Commands
 
 You can edit commands by running the make scripts in the scripts directory with deno.
+Facilitated with the deno tasks api.
 
 ```bash
-deno run --allow-net --allow-env scripts/makeJishoCommand.ts
-deno run --allow-net --allow-env scripts/makeTimeCommand.ts
-deno run --allow-net --allow-env scripts/makeXeCommand.ts
+deno task make-[command]
+# example:
+deno task make-xe
 ```

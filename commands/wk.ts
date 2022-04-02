@@ -79,7 +79,7 @@ export interface UserSubscription {
 
 export interface WKOptions {
   [key: string]: string | undefined;
-  type: "level" | "summary" | "user" | "dev";
+  type: "level" | "summary" | "user" | "dev" | "refresh";
 }
 
 const baseURL = "https://api.wanikani.com/v2/";
@@ -125,12 +125,12 @@ const updateUserData = async (
 
 // Gets data from the cached API, if data is not cached or last updated is 1 hour ago,
 // then fetch the data from the API and cache it.
-const getUserData = async (userId: string, redis: Redis) => {
+const getUserData = async (userId: string, redis: Redis, refresh: boolean) => {
   const userKey = `${userId}:wk_data`;
 
   const userData = await redis.get(userKey);
 
-  if (userData) {
+  if (userData && !refresh) {
     const cacheData: CacheData = JSON.parse(userData);
     const lastUpdate = cacheData.last_update;
     const now = new Date().getTime();
@@ -178,7 +178,7 @@ const handle = async (
   redis: Redis
 ) => {
   const { type } = options;
-  const data = await getUserData(userId, redis);
+  const data = await getUserData(userId, redis, type === "refresh");
 
   // TODO: proper responses
   switch (type) {
@@ -200,6 +200,9 @@ const handle = async (
         return "You are not in the development server to access this data";
       }
       return JSON.stringify(data);
+    }
+    case "refresh": {
+      return "Refreshed your data from the API";
     }
   }
 };

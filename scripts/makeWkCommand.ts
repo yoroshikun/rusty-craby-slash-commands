@@ -37,6 +37,10 @@ const makeWkCommand = async () => {
                   name: "dev",
                   value: "dev",
                 },
+                {
+                  name: "refresh",
+                  value: "refresh",
+                },
               ],
             },
           ],

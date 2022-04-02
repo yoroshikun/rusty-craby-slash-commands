@@ -102,15 +102,15 @@ const updateUserData = async (
   userId: string,
   redis: Redis
 ): Promise<CacheData> => {
-  const userToken = await redis.get(`${userId}:user_token`);
+  const wkToken = await redis.get(`${userId}:wk_token`);
 
-  if (!userToken) {
+  if (!wkToken) {
     throw new Error("No user token found");
   }
 
-  const userData = await fetchApi("user", userToken as string);
-  const levelData = await fetchApi("level_progression", userToken as string);
-  const summaryData = await fetchApi("summary", userToken as string);
+  const userData = await fetchApi("user", wkToken as string);
+  const levelData = await fetchApi("level_progression", wkToken as string);
+  const summaryData = await fetchApi("summary", wkToken as string);
 
   const cacheData: CacheData = {
     last_update: Date.now(),
@@ -162,7 +162,9 @@ const makeSummary = (cacheData: CacheData): string => {
 const makeUser = (cacheData: CacheData): string => {
   const level = cacheData.user.data.level;
   const username = cacheData.user.data.username;
-  const startedAt = `<t:${new Date(cacheData.user.data.started_at).getTime() / 1000}>`;
+  const startedAt = `<t:${
+    new Date(cacheData.user.data.started_at).getTime() / 1000
+  }>`;
   const subscription = cacheData.user.data.subscription.type;
   const maxLevel = cacheData.user.data.subscription.max_level_granted;
 

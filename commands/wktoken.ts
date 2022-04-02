@@ -42,23 +42,38 @@ const deleteWKToken = async (userId: string, redis: Redis) => {
   await redis.del(wkTokenKey);
 };
 
-const getWKToken = async (userId: string, redis: Redis) => {
+const getWKToken = async (userId: string, serverId: string, redis: Redis) => {
+  if (!userId) {
+    throw new Error("No userId found");
+  }
+
+  if (!serverId) {
+    throw new Error("No serverId found");
+  }
+
+  if (serverId !== "629477069964836864") {
+    return "You really shouldn't check your token here! If you need to update it use the set command";
+  }
+
   const wkTokenKey = `${userId}:wk_token`;
   const token = await redis.get(wkTokenKey);
+
   if (!token) {
     return "No token found, you should add one!";
   }
+
   return token;
 };
 
 const handle = async (
   options: WKTokenOptions,
   userId: string,
+  serverId: string,
   redis: Redis
 ) => {
   switch (options?.option || (options?.token ? "set" : "show")) {
     case "show":
-      return getWKToken(userId, redis);
+      return getWKToken(userId, serverId, redis);
     case "set": {
       const isValid = await verifyToken(options?.token);
       if (isValid && options?.token) {

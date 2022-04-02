@@ -11,6 +11,7 @@ import { DiscordInteractionData, DiscordEmbed } from "../utils/types.ts";
 const handleCommand = async (
   data: DiscordInteractionData["data"],
   member: DiscordInteractionData["member"],
+  guildId: string,
   redis: Redis
 ): Promise<DiscordEmbed> => {
   const command = data.name;
@@ -62,7 +63,7 @@ const handleCommand = async (
     }
     case "wktoken": {
       const ops = options as WKTokenOptions;
-      const result = await handleWKToken(ops, member.user.id, redis);
+      const result = await handleWKToken(ops, member.user.id, guildId, redis);
 
       return {
         type: "rich",

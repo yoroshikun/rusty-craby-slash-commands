@@ -20,6 +20,7 @@ const home = async (request: Request) => {
     type = 0,
     data,
     member,
+    guild_id,
   } = JSON.parse(result) as DiscordInteractionData;
 
   // Discord performs Ping interactions to test our application.
@@ -34,7 +35,7 @@ const home = async (request: Request) => {
   // It implies that a user has issued a command.
   if (type === 2) {
     try {
-      const embed = await handleCommand(data, member, redis);
+      const embed = await handleCommand(data, member, guild_id, redis);
 
       return json({
         type: 4,

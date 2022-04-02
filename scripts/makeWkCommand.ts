@@ -1,4 +1,4 @@
-const makeWkTokenCommand = async () => {
+const makeWkCommand = async () => {
   const BOT_TOKEN = Deno.env.get("BOT_TOKEN");
   const CLIENT_ID = Deno.env.get("CLIENT_ID");
 
@@ -12,32 +12,30 @@ const makeWkTokenCommand = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: "wktoken",
-          description: "Manage your WK Token",
+          name: "wk",
+          description: "Some WaniKani Account Commands",
           options: [
             {
-              name: "token",
-              description: "The token that will be used to access WaniKani",
+              name: "type",
+              description: "The type of command to run",
               type: 3,
-              required: false,
-            },
-            {
-              name: "option",
-              description: "The option that will be used to manage your token",
-              type: 3,
-              required: false,
+              required: true,
               choices: [
                 {
-                  name: "show",
-                  value: "show",
+                  name: "summary",
+                  value: "summary",
                 },
                 {
-                  name: "set",
-                  value: "set",
+                  name: "level",
+                  value: "level",
                 },
                 {
-                  name: "delete",
-                  value: "delete",
+                  name: "user",
+                  value: "user",
+                },
+                {
+                  name: "dev",
+                  value: "dev",
                 },
               ],
             },
@@ -52,4 +50,4 @@ const makeWkTokenCommand = async () => {
   }
 };
 
-await makeWkTokenCommand();
+await makeWkCommand();

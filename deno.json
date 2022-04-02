@@ -2,6 +2,7 @@
   "tasks": {
     "make-jisho": "deno run --allow-net --allow-env scripts/makeJishoCommand.ts",
     "make-time": "deno run --allow-net --allow-env scripts/makeTimeCommand.ts",
+    "make-wk": "deno run --allow-net --allow-env scripts/makeWkCommand.ts",
     "make-wktoken": "deno run --allow-net --allow-env scripts/makeWkTokenCommand.ts",
     "make-xe": "deno run --allow-net --allow-env scripts/makeXeCommand.ts"
   }

@@ -149,12 +149,12 @@ const makeSummary = (cacheData: CacheData): string => {
   const level = cacheData.user.data.level;
   const lessons = cacheData.summary.data.lessons.subject_ids.length;
   const reviews = cacheData.summary.data.reviews.subject_ids.length;
-  const nextLesson = `<t:${
+  const nextLesson = `<t:${Math.floor(
     new Date(cacheData.summary.data.lessons.available_at).getTime() / 1000
-  }>`;
-  const nextReview = `<t:${
+  )}>`;
+  const nextReview = `<t:${Math.floor(
     new Date(cacheData.summary.data.reviews.available_at).getTime() / 1000
-  }>`;
+  )}>`;
 
   return `Level: ${level}\nLessons: ${lessons}\nReviews: ${reviews}\nNext lesson: ${nextLesson}\nNext review: ${nextReview}`;
 };
@@ -162,9 +162,9 @@ const makeSummary = (cacheData: CacheData): string => {
 const makeUser = (cacheData: CacheData): string => {
   const level = cacheData.user.data.level;
   const username = cacheData.user.data.username;
-  const startedAt = `<t:${
+  const startedAt = `<t:${Math.floor(
     new Date(cacheData.user.data.started_at).getTime() / 1000
-  }>`;
+  )}>`;
   const subscription = cacheData.user.data.subscription.type;
   const maxLevel = cacheData.user.data.subscription.max_level_granted;
 

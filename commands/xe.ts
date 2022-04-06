@@ -38,11 +38,18 @@ const setUserDefaultCurrencyCodes = async (
 };
 
 const getExchangeRate = async (from: string, to: string) => {
-  const conversionKey = `${from}_${to}`;
-  const url = `https://free.currconv.com/api/v7/convert?q=${conversionKey}&compact=ultra&apiKey=${API_KEY}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data[conversionKey];
+  try {
+    const conversionKey = `${from}_${to}`;
+    const url = `https://free.currconv.com/api/v7/convert?q=${conversionKey}&compact=ultra&apiKey=${API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data[conversionKey];
+  } catch (error) {
+    console.error(error);
+    throw new Error(
+      "Looks like the exchange rate API is down. Try again later."
+    );
+  }
 };
 
 const setDefaults = async (
